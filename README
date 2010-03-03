@@ -1,0 +1,19 @@
+Chrome EZProxy Redirect
+=======================
+
+By: Tom Wambold <tom5760@gmail.com>
+
+Code: http://github.com/tom5760/chrome-ezproxy
+Extension: http://chrome.google.com/extensions/detail/gfhnhcbpnnnlefhobdnmhenofhfnnfhi
+
+Destription
+-----------
+
+Many universities use EZProxy to allow its students access to various online
+databases.  This extension adds a button to Chrome which allows for a quick way
+to reload the current page through your EZProxy system.
+
+All it does is pass the URL to your library's EZProxy login URL.  For example:
+    http://ieeexplore.ieee.org/
+would change to:
+    http://www.library.drexel.edu/cgi-bin/r.cgi?url=http://ieeexplore.ieee.org
