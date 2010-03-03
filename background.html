@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <script>
+            chrome.browserAction.onClicked.addListener(function(tab) {
+                var url = localStorage["base_url"];
+                if (!url) {
+                    url = localStorage["base_url"] = "http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@";
+                }
+
+                if (url.indexOf("$@") >= 0) {
+                    url = url.replace("$@", tab.url);
+                }
+                chrome.tabs.update(tab.id, {"url": url});
+            });
+        </script>
+    </head>
+</html>

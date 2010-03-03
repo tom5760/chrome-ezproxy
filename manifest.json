@@ -1,0 +1,18 @@
+{
+    "name": "EZProxy Redirect",
+    "description": "Quickly reload pages through your library's EZProxy.",
+    "version": "4",
+    "background_page": "background.html",
+    "options_page": "options.html",
+    "permissions": [
+        "tabs"
+    ],
+    "icons": {
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_title": "Reload through EZProxy"
+    }
+}

@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title>EZProxy Redirect Options</title>
+    </head>
+    <script type="text/javascript">
+        function save_options () {
+            localStorage["base_url"] = document.getElementById("base_url").value;
+
+            // Update status to let user know options were saved.
+            var status = document.getElementById("status");
+            status.innerHTML = "Options Saved.";
+            setTimeout(function() {
+                status.innerHTML = "";
+            }, 2000);
+        }
+
+        function restore_options() {
+            var base_url = localStorage["base_url"];
+            if (!base_url) {
+                base_url = localStorage["base_url"] = "http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@";
+            }
+            document.getElementById("base_url").value = base_url;
+        }
+    </script>
+    <body onload="restore_options()">
+        <h2>EZProxy Redirect Options</h2>
+        <p id="status"></p>
+        <p>The string "$@" (without quotes) will be replaced with the URL to redirect to.  For example <code>http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@</code>.</p>
+        <p>Here is <a href="http://www.deathraypizza.com/deathraypizza/EZProxy_URL_Examples.html">a list of examples from other schools</a>.
+        <p>EZProxy URL: <input id="base_url" type="url" size="25"></p>
+        <button onclick="save_options()">Save</button>
+    </body>
+</html>
