@@ -18,6 +18,14 @@
             chrome.browserAction.onClicked.addListener(function(tab) {
                 chrome.tabs.update(tab.id, {"url": transformUrl(tab.url)});
             });
+
+            chrome.contextMenus.create({
+                "title": "Open Link with EZProxy",
+                "contexts": "link",
+                "onclick": function(info, tab) {
+                    chrome.tabs.create({"url": transformUrl(info.linkUrl)});
+                }
+            });
         </script>
     </head>
 </html>
