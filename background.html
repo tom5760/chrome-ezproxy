@@ -1,16 +1,22 @@
 <html>
     <head>
         <script>
-            chrome.browserAction.onClicked.addListener(function(tab) {
-                var url = localStorage["base_url"];
-                if (!url) {
-                    url = localStorage["base_url"] = "http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@";
+            const DEFAULT_BASE_URL = "http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@";
+
+            function transformUrl(url) {
+                var base = localStorage["base_url"];
+                if (!base) {
+                    base = localStorage["base_url"] = DEFAULT_BASE_URL;
                 }
 
-                if (url.indexOf("$@") >= 0) {
-                    url = url.replace("$@", tab.url);
+                if (base.indexOf("$@") >= 0) {
+                    return base.replace("$@", url);
                 }
-                chrome.tabs.update(tab.id, {"url": url});
+                return base;
+            }
+
+            chrome.browserAction.onClicked.addListener(function(tab) {
+                chrome.tabs.update(tab.id, {"url": transformUrl(tab.url)});
             });
         </script>
     </head>
