@@ -1,8 +1,6 @@
 <html>
     <head>
         <title>EZProxy Redirect Options</title>
-    </head>
-    <script type="text/javascript">
         function save_options () {
             localStorage["base_url"] = document.getElementById("base_url").value;
 
@@ -21,7 +19,8 @@
             }
             document.getElementById("base_url").value = base_url;
         }
-    </script>
+        </script>
+    </head>
     <body onload="restore_options()">
         <h2>EZProxy Redirect Options</h2>
         <p id="status"></p>
