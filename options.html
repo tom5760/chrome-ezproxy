@@ -1,24 +1,42 @@
 <html>
     <head>
         <title>EZProxy Redirect Options</title>
-        function save_options () {
-            localStorage["base_url"] = document.getElementById("base_url").value;
+        <script type="text/javascript">
+            function save_options() {
+                localStorage["base_url"] = document.getElementById("base_url_box").value;
 
-            // Update status to let user know options were saved.
-            var status = document.getElementById("status");
-            status.innerHTML = "Options Saved.";
-            setTimeout(function() {
-                status.innerHTML = "";
-            }, 2000);
-        }
-
-        function restore_options() {
-            var base_url = localStorage["base_url"];
-            if (!base_url) {
-                base_url = localStorage["base_url"] = "http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@";
+                // Update status to let user know options were saved.
+                var status = document.getElementById("status");
+                status.innerHTML = "Options Saved.";
+                setTimeout(function() {
+                    status.innerHTML = "";
+                }, 2000);
             }
-            document.getElementById("base_url").value = base_url;
-        }
+
+            function restore_options() {
+                var base_url = localStorage["base_url"];
+                if (base_url) {
+                    var select_box = document.getElementById("base_url_select");
+                    select_box.value = base_url;
+                    if (select_box.value != base_url) {
+                        select_box.value = "custom";
+                        var text = document.getElementById("base_url_box");
+                        text.value = base_url;
+                    }
+                }
+                select_onchange();
+            }
+
+            function select_onchange() {
+                var select = document.getElementById("base_url_select");
+                var text = document.getElementById("base_url_box");
+                if (select.value == "custom") {
+                    text.disabled = false;
+                } else {
+                    text.disabled = true;
+                    text.value = select.value;
+                }
+            }
         </script>
     </head>
     <body onload="restore_options()">
