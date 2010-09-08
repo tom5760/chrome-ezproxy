@@ -17,3 +17,13 @@ All it does is pass the URL to your library's EZProxy login URL.  For example:
     http://ieeexplore.ieee.org/
 would change to:
     http://www.library.drexel.edu/cgi-bin/r.cgi?url=http://ieeexplore.ieee.org
+
+Change Log
+----------
+
+Version 5 - September 8, 2010:
+    * Added context menu item for links.
+    * Added drop down box in options to select school.
+Version 4 - March 3, 2010:
+    * Initial version on GitHub.
+    * Simple redirect button.
