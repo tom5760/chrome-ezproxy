@@ -1,7 +1,7 @@
 {
     "name": "EZProxy Redirect",
     "description": "Quickly reload pages through your library's EZProxy.",
-    "version": "8",
+    "version": "9",
     "background_page": "background.html",
     "options_page": "options.html",
     "permissions": [

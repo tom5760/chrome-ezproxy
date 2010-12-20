@@ -21,8 +21,9 @@ would change to:
 Change Log
 ----------
 
-Version 8 - December 20, 2010:
+Version 8,9 - December 20, 2010:
     * Added URL for University of Central Florida (thanks Pieter).
+    * Updated icon (I seem to have forgotten to commit it last time).
 Version 5 - September 8, 2010:
     * Added context menu item for links.
     * Added drop down box in options to select school.
