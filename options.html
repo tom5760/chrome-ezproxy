@@ -3,39 +3,49 @@
         <title>EZProxy Redirect Options</title>
         <script type="text/javascript">
             function save_options() {
-                localStorage["base_url"] = document.getElementById("base_url_box").value;
+                localStorage["base_url"] = url_box.value;
 
                 // Update status to let user know options were saved.
-                var status = document.getElementById("status");
-                status.innerHTML = "Options Saved.";
+                status_field.innerHTML = "Options Saved.";
                 setTimeout(function() {
-                    status.innerHTML = "";
+                    status_field.innerHTML = "";
                 }, 2000);
             }
 
             function restore_options() {
+                window.status_field = document.getElementById("status");
+                window.url_box = document.getElementById("base_url_box");
+                window.select_box = document.getElementById("base_url_select");
+                window.select_radio = document.getElementById("url_select");
+                window.custom_radio = document.getElementById("url_custom");
+
                 var base_url = localStorage["base_url"];
+
                 if (base_url) {
-                    var select_box = document.getElementById("base_url_select");
+                    url_box.value = base_url;
                     select_box.value = base_url;
-                    if (select_box.value != base_url) {
-                        select_box.value = "custom";
-                        var text = document.getElementById("base_url_box");
-                        text.value = base_url;
+                    if (select_box.value == base_url) {
+                        select_radio.checked = true;
+                    } else {
+                        custom_radio.checked = true;
                     }
+                } else {
+                    select_radio.checked = true;
+                    select_box.selectedIndex = 0;
                 }
+                radio_onclick();
                 select_onchange();
             }
 
             function select_onchange() {
-                var select = document.getElementById("base_url_select");
-                var text = document.getElementById("base_url_box");
-                if (select.value == "custom") {
-                    text.disabled = false;
-                } else {
-                    text.disabled = true;
-                    text.value = select.value;
+                if (select_radio.checked) {
+                    url_box.value = select_box.value;
                 }
+            }
+
+            function radio_onclick() {
+                select_box.disabled = !select_radio.checked;
+                url_box.disabled = select_radio.checked;
             }
         </script>
     </head>
@@ -44,6 +54,7 @@
         <p id="status"></p>
         <p>The string "$@" (without quotes) will be replaced with the URL to redirect to.  For example <code>http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@</code>.</p>
         <p>Here is <a href="http://www.deathraypizza.com/deathraypizza/EZProxy_URL_Examples.html">a list of examples from other schools</a>.</p>
+        <input type="radio" id="url_select" name="url_type" onClick="radio_onclick();"/>
         <label for="base_url_select">Select School:</label>
         <select id="base_url_select" onchange="select_onchange();">
             <!-- From http://www.deathraypizza.com/deathraypizza/EZProxy_URL_Examples.html --!>
@@ -84,9 +95,9 @@
             <option value="http://offcampus.lib.washington.edu/login?url=$@">University of Washington</option>
             <option value="https://www.lib.uwo.ca/cgi-bin/ezpauthn.cgi?url=$@">University of Western Ontario</option>
             <option value="http://ezproxy.library.wisc.edu/login?url=$@">University of Wisconsin Madison</option>
-            <option value="custom">Custom</option>
         </select>
         <p><strong>-OR-</strong></p>
+        <input type="radio" id="url_custom" name="url_type" onClick="radio_onclick();"/>
         <label for="base_url_box">EZProxy URL:</label>
         <input id="base_url_box" type="url" size="60"/>
         <p><button onclick="save_options()">Save</button></p>
