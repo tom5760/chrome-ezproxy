@@ -2,6 +2,23 @@
     <head>
         <title>EZProxy Redirect Options</title>
         <script type="text/javascript">
+            var status_field;
+            var url_box;
+            var select_box;
+            var select_radio;
+            var custom_radio;
+
+            function init_options() {
+                status_field = document.getElementById("status");
+                url_box = document.getElementById("base_url_box");
+                select_box = document.getElementById("base_url_select");
+                select_radio = document.getElementById("url_select");
+                custom_radio = document.getElementById("url_custom");
+
+                update_url_select();
+                restore_options();
+            }
+
             function save_options() {
                 localStorage["base_url"] = url_box.value;
 
@@ -13,14 +30,6 @@
             }
 
             function restore_options() {
-                window.status_field = document.getElementById("status");
-                window.url_box = document.getElementById("base_url_box");
-                window.select_box = document.getElementById("base_url_select");
-                window.select_radio = document.getElementById("url_select");
-                window.custom_radio = document.getElementById("url_custom");
-
-                update_url_select();
-
                 var base_url = localStorage["base_url"];
 
                 if (base_url) {
@@ -74,7 +83,7 @@
             }
         </script>
     </head>
-    <body onload="restore_options()">
+    <body onload="init_options()">
         <h2>EZProxy Redirect Options</h2>
         <p id="status"></p>
         <p>The string "$@" (without quotes) will be replaced with the URL to redirect to.  For example <code>http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@</code>.</p>
