@@ -5,7 +5,8 @@
     "background_page": "background.html",
     "options_page": "options.html",
     "permissions": [
-        "contextMenus"
+        "contextMenus",
+        "http://ezproxy-db.appspot.com/"
     ],
     "icons": {
         "16": "icon16.png",
