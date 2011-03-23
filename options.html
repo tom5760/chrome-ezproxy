@@ -87,7 +87,8 @@
         <h2>EZProxy Redirect Options</h2>
         <p id="status"></p>
         <p>The string "$@" (without quotes) will be replaced with the URL to redirect to.  For example <code>http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@</code>.</p>
-        <p>Here is <a href="http://www.deathraypizza.com/deathraypizza/EZProxy_URL_Examples.html">a list of examples from other schools</a>.</p>
+        <p>The list of schools below will auto-update from my <a href="http://ezproxy-db.appspot.com/">EZProxy database</a></p>
+        <p>Here is <a href="http://www.deathraypizza.com/deathraypizza/EZProxy_URL_Examples.html">a list of examples from other schools</a> (these should all be in the list below).</p>
         <input type="radio" id="url_select" name="url_type" onClick="radio_onclick();"/>
         <label for="base_url_select">Select School:</label>
         <select id="base_url_select" onchange="select_onchange();">
@@ -131,6 +132,7 @@
             <option value="http://ezproxy.library.wisc.edu/login?url=$@">University of Wisconsin Madison</option>
         </select>
         <p><strong>-OR-</strong></p>
+        <p>If you use a custom URL, please submit your addition/correction to the <a href="http://ezproxy-db.appspot.com/">EZProxy database</a> so that others may benefit.</p>
         <input type="radio" id="url_custom" name="url_type" onClick="radio_onclick();"/>
         <label for="base_url_box">EZProxy URL:</label>
         <input id="base_url_box" type="url" size="60"/>
