@@ -6,7 +6,7 @@
     "options_page": "options.html",
     "permissions": [
         "contextMenus",
-        "http://ezproxy-db.appspot.com/"
+        "http://ezproxy-db.appspot.com/proxies.json"
     ],
     "icons": {
         "16": "icon16.png",
