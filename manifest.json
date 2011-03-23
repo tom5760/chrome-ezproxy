@@ -5,7 +5,6 @@
     "background_page": "background.html",
     "options_page": "options.html",
     "permissions": [
-        "tabs",
         "contextMenus"
     ],
     "icons": {
