@@ -21,6 +21,12 @@ would change to:
 Change Log
 ----------
 
+Version 10 - March 23, 2011:
+    * Added support for updating URL lists from my EZProxy URL Database, so
+      I don't have to release new versions of the extension just to add new
+      URLs. http://ezproxy-db.appspot.com/
+    * Fixed Columbia University URL (thanks Chris)
+    * Added RIT URL (thanks Sakshar)
 Version 8,9 - December 20, 2010:
     * Added URL for University of Central Florida (thanks Pieter).
     * Updated icon (I seem to have forgotten to commit it last time).
