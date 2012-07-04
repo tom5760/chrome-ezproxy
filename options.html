@@ -1,97 +1,20 @@
+<!doctype html>
 <html>
     <head>
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title>EZProxy Redirect Options</title>
-        <script type="text/javascript">
-            var status_field;
-            var url_box;
-            var select_box;
-            var select_radio;
-            var custom_radio;
-
-            function init_options() {
-                status_field = document.getElementById("status");
-                url_box = document.getElementById("base_url_box");
-                select_box = document.getElementById("base_url_select");
-                select_radio = document.getElementById("url_select");
-                custom_radio = document.getElementById("url_custom");
-
-                update_url_select();
-                restore_options();
-            }
-
-            function save_options() {
-                localStorage["base_url"] = url_box.value;
-
-                // Update status to let user know options were saved.
-                status_field.innerHTML = "Options Saved.";
-                setTimeout(function() {
-                    status_field.innerHTML = "";
-                }, 2000);
-            }
-
-            function restore_options() {
-                var base_url = localStorage["base_url"];
-
-                if (base_url) {
-                    url_box.value = base_url;
-                    select_box.value = base_url;
-                    if (select_box.value == base_url) {
-                        select_radio.checked = true;
-                    } else {
-                        custom_radio.checked = true;
-                    }
-                } else {
-                    select_radio.checked = true;
-                    select_box.selectedIndex = 0;
-                }
-                radio_onclick();
-                select_onchange();
-            }
-
-            function select_onchange() {
-                if (select_radio.checked) {
-                    url_box.value = select_box.value;
-                }
-            }
-
-            function radio_onclick() {
-                select_box.disabled = !select_radio.checked;
-                url_box.disabled = select_radio.checked;
-            }
-
-            function update_url_select() {
-                var req = new XMLHttpRequest();
-                req.open("GET",
-                         "http://ezproxy-db.appspot.com/proxies.json", false);
-                req.onreadystatechange = function(event) {
-                    if (req.readyState != 4 || req.status != 200) {
-                        return;
-                    }
-                    var response = JSON.parse(req.responseText);
-                    for (var i = select_box.length - 1; i >= 0; i--) {
-                        select_box.remove(i);
-                    }
-                    for (var i in response.proxies) {
-                        proxy = response.proxies[i];
-                        var option = document.createElement("option");
-                        option.text = proxy.name;
-                        option.value = proxy.url;
-                        select_box.add(option, null);
-                    }
-                }
-                req.send();
-            }
-        </script>
+        <script src="options.js"></script>
     </head>
-    <body onload="init_options()">
+    <body>
         <h2>EZProxy Redirect Options</h2>
         <p id="status"></p>
         <p>The string "$@" (without quotes) will be replaced with the URL to redirect to.  For example <code>http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@</code>.</p>
         <p>The list of schools below will auto-update from my <a href="http://ezproxy-db.appspot.com/">EZProxy database</a></p>
         <p>Here is <a href="http://www.deathraypizza.com/deathraypizza/EZProxy_URL_Examples.html">a list of examples from other schools</a> (these should all be in the list below).</p>
-        <input type="radio" id="url_select" name="url_type" onClick="radio_onclick();"/>
+        <input type="radio" id="url_select" name="url_type"/>
         <label for="base_url_select">Select School:</label>
-        <select id="base_url_select" onchange="select_onchange();">
+        <select id="base_url_select">
             <!-- From http://www.deathraypizza.com/deathraypizza/EZProxy_URL_Examples.html --!>
             <option value="http://login.ezproxy1.lib.asu.edu/login?url=$@">Arizona State University</option>
             <option value="http://ezpcrc.bu.edu/login?URL=$@">Boston University Charles River Campus</option>
@@ -133,9 +56,9 @@
         </select>
         <p><strong>-OR-</strong></p>
         <p>If you use a custom URL, please submit your addition/correction to the <a href="http://ezproxy-db.appspot.com/">EZProxy database</a> so that others may benefit.</p>
-        <input type="radio" id="url_custom" name="url_type" onClick="radio_onclick();"/>
+        <input type="radio" id="url_custom" name="url_type"/>
         <label for="base_url_box">EZProxy URL:</label>
         <input id="base_url_box" type="url" size="60"/>
-        <p><button onclick="save_options()">Save</button></p>
+        <p><button id="save_button">Save</button></p>
     </body>
 </html>
