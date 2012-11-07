@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "EZProxy Redirect",
     "description": "Quickly reload pages through your library's EZProxy.",
-    "version": "12",
+    "version": "13",
     "background": {
         "scripts": ["background.js"]
     },
