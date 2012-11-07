@@ -71,15 +71,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             }
             var response = JSON.parse(req.responseText);
-            for (var i = select_box.length - 1; i >= 0; i--) {
-                select_box.remove(i);
-            }
-            for (var i in response.proxies) {
-                proxy = response.proxies[i];
-                var option = document.createElement("option");
-                option.text = proxy.name;
-                option.value = proxy.url;
-                select_box.add(option, null);
+            if (response.length > 0) {
+                for (var i = select_box.length - 1; i >= 0; i--) {
+                    select_box.remove(i);
+                }
+                for (var i in response) {
+                    var proxy = response[i];
+                    var option = document.createElement("option");
+                    option.text = proxy.name;
+                    option.value = proxy.url;
+                    select_box.add(option, null);
+                }
             }
         }
         req.send();
