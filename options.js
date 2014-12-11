@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function update_url_select() {
         var req = new XMLHttpRequest();
         req.open("GET",
-                "http://ezproxy-db.appspot.com/proxies.json", false);
+                "https://ezproxy-db.appspot.com/proxies.json", false);
         req.onreadystatechange = function(event) {
             if (req.readyState != 4 || req.status != 200) {
                 return;

@@ -3,8 +3,8 @@ Chrome EZProxy Redirect
 
 By: Tom Wambold <tom5760@gmail.com>
 
-Code: http://github.com/tom5760/chrome-ezproxy
-Extension: http://chrome.google.com/extensions/detail/gfhnhcbpnnnlefhobdnmhenofhfnnfhi
+Code: https://github.com/tom5760/chrome-ezproxy
+Extension: https://chrome.google.com/extensions/detail/gfhnhcbpnnnlefhobdnmhenofhfnnfhi
 
 Destription
 -----------
@@ -24,7 +24,7 @@ Change Log
 Version 10 - March 23, 2011:
     * Added support for updating URL lists from my EZProxy URL Database, so
       I don't have to release new versions of the extension just to add new
-      URLs. http://ezproxy-db.appspot.com/
+      URLs. https://ezproxy-db.appspot.com/
     * Fixed Columbia University URL (thanks Chris)
     * Added RIT URL (thanks Sakshar)
 Version 8,9 - December 20, 2010:
