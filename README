@@ -21,6 +21,8 @@ would change to:
 Change Log
 ----------
 
+Version 14 - December 11, 2014:
+    * Use chrome's synced storage to save the redirect url
 Version 10 - March 23, 2011:
     * Added support for updating URL lists from my EZProxy URL Database, so
       I don't have to release new versions of the extension just to add new
