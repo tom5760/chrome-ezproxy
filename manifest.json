@@ -1,15 +1,18 @@
 {
     "manifest_version": 2,
+    "minimum_chrome_version": "21",
     "name": "EZProxy Redirect",
     "description": "Quickly reload pages through your library's EZProxy.",
-    "version": "13",
+    "version": "14",
     "background": {
-        "scripts": ["background.js"]
+        "scripts": ["background.js"],
+        "persistent": false
     },
     "options_page": "options.html",
     "permissions": [
         "contextMenus",
-        "http://ezproxy-db.appspot.com/proxies.json"
+        "storage",
+        "https://ezproxy-db.appspot.com/proxies.json"
     ],
     "icons": {
         "16": "icon16.png",
