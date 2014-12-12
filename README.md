@@ -2,6 +2,7 @@ Chrome EZProxy Redirect
 =======================
 
 By: Tom Wambold <tom5760@gmail.com>
+Updates By: Rohit Agrawal <https://github.com/rohitagr>
 
 Code: https://github.com/tom5760/chrome-ezproxy
 Extension: https://chrome.google.com/extensions/detail/gfhnhcbpnnnlefhobdnmhenofhfnnfhi
@@ -21,7 +22,7 @@ would change to:
 Change Log
 ----------
 
-Version 14 - December 11, 2014:
+Version 14 - December 12, 2014:
     * Use chrome's synced storage to save the redirect url
 Version 10 - March 23, 2011:
     * Added support for updating URL lists from my EZProxy URL Database, so
