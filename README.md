@@ -2,9 +2,11 @@ Chrome EZProxy Redirect
 =======================
 
 By: Tom Wambold <tom5760@gmail.com>
+
 Updates By: Rohit Agrawal <https://github.com/rohitagr>
 
 Code: https://github.com/tom5760/chrome-ezproxy
+
 Extension: https://chrome.google.com/extensions/detail/gfhnhcbpnnnlefhobdnmhenofhfnnfhi
 
 Destription
@@ -15,27 +17,34 @@ databases.  This extension adds a button to Chrome which allows for a quick way
 to reload the current page through your EZProxy system.
 
 All it does is pass the URL to your library's EZProxy login URL.  For example:
+
     http://ieeexplore.ieee.org/
+
 would change to:
+
     http://www.library.drexel.edu/cgi-bin/r.cgi?url=http://ieeexplore.ieee.org
 
 Change Log
 ----------
 
 Version 14 - December 12, 2014:
-    * Use chrome's synced storage to save the redirect url
+* Use chrome's synced storage to save the redirect url
+
 Version 10 - March 23, 2011:
-    * Added support for updating URL lists from my EZProxy URL Database, so
-      I don't have to release new versions of the extension just to add new
-      URLs. https://ezproxy-db.appspot.com/
-    * Fixed Columbia University URL (thanks Chris)
-    * Added RIT URL (thanks Sakshar)
+* Added support for updating URL lists from my EZProxy URL Database, so
+  I don't have to release new versions of the extension just to add new
+  URLs. https://ezproxy-db.appspot.com/
+* Fixed Columbia University URL (thanks Chris)
+* Added RIT URL (thanks Sakshar)
+
 Version 8,9 - December 20, 2010:
-    * Added URL for University of Central Florida (thanks Pieter).
-    * Updated icon (I seem to have forgotten to commit it last time).
+* Added URL for University of Central Florida (thanks Pieter).
+* Updated icon (I seem to have forgotten to commit it last time).
+
 Version 5 - September 8, 2010:
-    * Added context menu item for links.
-    * Added drop down box in options to select school.
+* Added context menu item for links.
+* Added drop down box in options to select school.
+
 Version 4 - March 3, 2010:
-    * Initial version on GitHub.
-    * Simple redirect button.
+* Initial version on GitHub.
+* Simple redirect button.
