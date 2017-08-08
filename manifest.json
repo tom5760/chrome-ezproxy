@@ -3,7 +3,7 @@
     "minimum_chrome_version": "21",
     "name": "EZProxy Redirect",
     "description": "Quickly reload pages through your library's EZProxy.",
-    "version": "14",
+    "version": "15",
     "background": {
         "scripts": ["background.js"],
         "persistent": false
