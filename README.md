@@ -27,6 +27,13 @@ would change to:
 Change Log
 ----------
 
+Version 15 - August 9, 2017:
+* Update to fix issue in Chrome 60.  The latest version of Chrome restricts
+  access to the URL the current tab is on behind the "tabs" permission.  This
+  is required so that the extension can redirect you when you click the
+  extension button.  Nothing about the actual function of the extension
+  changed, just the added permission to keep the current functionality working.
+
 Version 14 - December 12, 2014:
 * Use chrome's synced storage to save the redirect url
 
