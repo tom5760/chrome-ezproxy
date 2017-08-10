@@ -27,6 +27,11 @@ would change to:
 Change Log
 ----------
 
+Version 16 - August 10, 2017:
+* Update to yesterdays release, now uses the "activeTab" permission, instead of
+  the "tabs" permission, which removes the scary warning about the extension
+  being able to access browser history (it doesn't).
+
 Version 15 - August 9, 2017:
 * Update to fix issue in Chrome 60.  The latest version of Chrome restricts
   access to the URL the current tab is on behind the "tabs" permission.  This
