@@ -12,7 +12,7 @@
     "permissions": [
         "contextMenus",
         "storage",
-        "tabs",
+        "activeTab",
         "https://ezproxy-db.appspot.com/proxies.json"
     ],
     "icons": {
