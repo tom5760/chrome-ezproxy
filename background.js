@@ -1,51 +1,90 @@
-const DEFAULT_BASE_URL = "http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@";
+const DEFAULT_BASE_URL = 'http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@'
 
-function transformUrl(url, callback) {
-    chrome.storage.sync.get({"base_url": DEFAULT_BASE_URL}, function(items) {
-        var base = items["base_url"];
-        if (base.indexOf("$@") >= 0) {
-            base = base.replace("$@", url);
-        }
-        callback(base);
-    });
+function requestPermission(options) {
+  return new Promise((resolve, reject) =>
+    chrome.permissions.request(options, resolve))
 }
 
-chrome.browserAction.onClicked.addListener(function(tab) {
-    transformUrl(tab.url, function(newUrl) {
-        chrome.tabs.update(tab.id, {"url": newUrl});
-    });
-});
-
-chrome.contextMenus.onClicked.addListener(function(info, tab) {
-    transformUrl(info.linkUrl, function(newUrl) {
-        chrome.tabs.create({"url": newUrl});
-    });
-});
-
-function initialize() {
-    chrome.contextMenus.create({
-        "title": "Open Link with EZProxy",
-        "contexts": ["link"],
-        "id": "redirect"
-    });
+function storageGet(keys) {
+  return new Promise((resolve, reject) =>
+    chrome.storage.sync.get(keys, items => {
+      if (chrome.extension.lastError) {
+        reject(chrome.extension.lastError)
+      } else {
+        resolve(items)
+      }
+    }))
 }
 
-chrome.runtime.onInstalled.addListener(function(details) {
-    chrome.storage.sync.get({"base_url": null}, function(items) {
-        if (!items["base_url"]) {
-            // migrate old format
-            var legacyBase = localStorage["base_url"];
-            if (legacyBase) {
-                delete localStorage["base_url"];
-            } else {
-                legacyBase = DEFAULT_BASE_URL;
-            }
-            chrome.storage.sync.set({"base_url": legacyBase}, function() {
-                initialize();
-            });
-        } else {
-            initialize();
-        }
-    });
-});
+async function transformURL(url) {
+  const items = await storageGet({ base_url: DEFAULT_BASE_URL })
+  const base = items.base_url
+  const transformedURL = base.replace('$@', url)
+  return transformedURL
+}
 
+async function copy(text) {
+  if (!await requestPermission({ permissions: ['clipboardWrite'] })) {
+    return
+  }
+
+  const input = document.createElement('input')
+  try {
+    document.body.appendChild(input)
+
+    input.value = text
+    input.focus()
+    input.select()
+
+    document.execCommand('copy')
+  } finally {
+    input.remove()
+  }
+}
+
+chrome.browserAction.onClicked.addListener(async tab => {
+  const newURL = await transformURL(tab.url)
+  chrome.tabs.update(tab.id, { url: newURL })
+})
+
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+  const oldURL = info.linkUrl || tab.url
+  const newURL = await transformURL(oldURL)
+
+  switch (info.menuItemId) {
+    case 'redirect':
+      chrome.tabs.create({ url: newURL })
+      break
+
+    case 'copy':
+      copy(newURL)
+      break
+  }
+})
+
+chrome.runtime.onInstalled.addListener(async details => {
+  // Migrate old format.
+  const items = await storageGet({ base_url: null })
+
+  if (!items.base_url) {
+    var legacyBase = localStorage.base_url
+    if (legacyBase) {
+      delete localStorage.base_url
+    } else {
+      legacyBase = DEFAULT_BASE_URL
+    }
+    chrome.storage.sync.set({ base_url: legacyBase })
+  }
+})
+
+chrome.contextMenus.create({
+  id: 'redirect',
+  title: 'Open link in new tab',
+  contexts: ['link'],
+})
+
+chrome.contextMenus.create({
+  id: 'copy',
+  title: 'Copy link',
+  contexts: ['browser_action', 'link'],
+})

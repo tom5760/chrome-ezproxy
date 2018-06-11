@@ -20,6 +20,9 @@
         "activeTab",
         "https://ezproxy-db.appspot.com/proxies.json"
     ],
+    "optional_permissions": [
+        "clipboardWrite"
+    ],
     "icons": {
         "16": "icon16.png",
         "48": "icon48.png",
