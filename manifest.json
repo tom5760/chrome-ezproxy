@@ -1,14 +1,19 @@
 {
     "manifest_version": 2,
-    "minimum_chrome_version": "21",
     "name": "EZProxy Redirect",
     "description": "Quickly reload pages through your library's EZProxy.",
     "version": "16",
+    "author": "Tom Wambold <tom5760@gmail.com>",
+    "homepage_url": "https://github.com/tom5760/chrome-ezproxy",
+    "incognito": "split",
     "background": {
         "scripts": ["background.js"],
         "persistent": false
     },
-    "options_page": "options.html",
+    "options_ui": {
+        "page": "options.html",
+        "chrome_style": true
+    },
     "permissions": [
         "contextMenus",
         "storage",
@@ -21,7 +26,11 @@
         "128": "icon128.png"
     },
     "browser_action": {
-        "default_icon": "icon.png",
+        "default_icon": {
+            "16": "icon16.png",
+            "48": "icon48.png",
+            "128": "icon128.png"
+        },
         "default_title": "Reload through EZProxy"
     }
 }
