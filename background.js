@@ -1,21 +1,5 @@
 const DEFAULT_BASE_URL = 'http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@'
 
-function requestPermission(options) {
-  return new Promise((resolve, reject) =>
-    chrome.permissions.request(options, resolve))
-}
-
-function storageGet(keys) {
-  return new Promise((resolve, reject) =>
-    chrome.storage.sync.get(keys, items => {
-      if (chrome.extension.lastError) {
-        reject(chrome.extension.lastError)
-      } else {
-        resolve(items)
-      }
-    }))
-}
-
 async function transformURL(url) {
   const items = await storageGet({ base_url: DEFAULT_BASE_URL })
   const base = items.base_url

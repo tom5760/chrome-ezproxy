@@ -7,12 +7,15 @@
     "homepage_url": "https://github.com/tom5760/chrome-ezproxy",
     "incognito": "split",
     "background": {
-        "scripts": ["background.js"],
+        "scripts": [
+            "polyfills.js",
+            "background.js"
+        ],
         "persistent": false
     },
     "options_ui": {
         "page": "options.html",
-        "chrome_style": true
+        "open_in_tab": false
     },
     "permissions": [
         "contextMenus",
