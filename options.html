@@ -1,64 +1,96 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <title>EZProxy Redirect Options</title>
-        <script src="options.js"></script>
-    </head>
-    <body>
-        <h2>EZProxy Redirect Options</h2>
-        <p id="status"></p>
-        <p>The string "$@" (without quotes) will be replaced with the URL to redirect to.  For example <code>http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@</code>.</p>
-        <p>The list of schools below will auto-update from my <a href="https://ezproxy-db.appspot.com/">EZProxy database</a></p>
-        <p>Here is <a href="http://www.deathraypizza.com/deathraypizza/EZProxy_URL_Examples.html">a list of examples from other schools</a> (these should all be in the list below).</p>
-        <input type="radio" id="url_select" name="url_type"/>
-        <label for="base_url_select">Select School:</label>
-        <select id="base_url_select">
-            <!-- From http://www.deathraypizza.com/deathraypizza/EZProxy_URL_Examples.html -->
-            <option value="http://login.ezproxy1.lib.asu.edu/login?url=$@">Arizona State University</option>
-            <option value="http://ezpcrc.bu.edu/login?URL=$@">Boston University Charles River Campus</option>
-            <option value="https://www.lib.byu.edu/cgi-bin/remoteauth.pl?url=$@">Brigham Young University</option>
-            <option value="https://revproxy.brown.edu/login?url=$@">Brown University</option>
-            <option value="http://ezproxy.cul.columbia.edu/login?url=$@">Columbia University</option>
-            <option value="http://encompass.library.cornell.edu/cgi-bin/checkIP.cgi?access=gateway_standard&url=$@">Cornell University</option>
-            <option value="http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@">Drexel University</option>
-            <option value="http://proxy.lib.duke.edu:2048/login?url=$@">Duke University</option>
-            <option value="https://proxy.library.emory.edu/login?url=$@">Emory University</option>
-            <option value="https://login.proxy.lib.fsu.edu/login?url=$@">Florida State</option>
-            <option value="http://www.library.gatech.edu:2048/login?url=$@">Georgia Tech</option>
-            <option value="http://ezp1.harvard.edu/login?url=$@">Harvard</option>
-            <option value="http://ezproxyhost.library.tmc.edu/login?url=$@">Houston Academy of Medicine</option>
-            <option value="https://libproxy.mit.edu/cgi-bin/ezpauth?url=$@">MIT</option>
-            <option value="http://ezproxy.ub.unimaas.nl/login?url=$@">Maastricht University</option>
-            <option value="http://eresources.library.mssm.edu:2048/login?url=$@">Mt. Sinai School of Medicine (NYU)</option>
-            <option value="https://sesame.library.northwestern.edu:443/cgi-bin/ssoEzpCheck.pl?url=$@">Northwestern University</option>
-            <option value="http://ezproxy.rit.edu/login?url=$@">RIT</option>
-            <option value="https://login.ezproxy.rice.edu/login?url=$@">Rice University</option>
-            <option value="http://ezproxy.tamu.edu:2048/login?url=$@">Texas A&amp;M</option>
-            <option value="http://www.library.tufts.edu/ezproxy/exproxy.asp?LOCATION=$@">Tufts University</option>
-            <option value="http://libproxy.uthscsa.edu/login?url=$@">UT Health Center San Antonio</option>
-            <option value="http://proxy.ub.umu.se/login?url=$@">Umea University</option>
-            <option value="http://login.ezproxy.library.ualberta.ca/login?url=$@">University of Alberta</option>
-            <option value="http://login.ezproxy.lib.ucf.edu/login?url=$@">University of Central Florida</option>
-            <option value="http://proxy.cc.uic.edu/login?url=$@">University of Illinois at Chicago</option>
-            <option value="http://proxy-um.researchport.umd.edu/login?url=$@">University of Maryland, College Park</option>
-            <option value="https://www.lib.umn.edu/log.phtml?url=$@">University of Minnesota</option>
-            <option value="https://proxy.library.upenn.edu/login?url=$@">University of Pennsylvania</option>
-            <option value="http://ezproxy.library.uq.edu.au/login?url=$@">University of Queensland</option>
-            <option value="http://ezproxy.lib.usf.edu/login?url=$@">University of South Florida</option>
-            <option value="http://ezproxy.sussex.ac.uk/login?url=$@">University of Sussex</option>
-            <option value="http://ezproxy.library.usyd.edu.au/login?url=$@">University of Sydney</option>
-            <option value="http://myaccess.library.utoronto.ca/login?url=$@">University of Toronto</option>
-            <option value="http://offcampus.lib.washington.edu/login?url=$@">University of Washington</option>
-            <option value="https://www.lib.uwo.ca/cgi-bin/ezpauthn.cgi?url=$@">University of Western Ontario</option>
-            <option value="http://ezproxy.library.wisc.edu/login?url=$@">University of Wisconsin Madison</option>
-        </select>
-        <p><strong>-OR-</strong></p>
-        <p>If you use a custom URL, please submit your addition/correction to the <a href="https://ezproxy-db.appspot.com/">EZProxy database</a> so that others may benefit.</p>
-        <input type="radio" id="url_custom" name="url_type"/>
-        <label for="base_url_box">EZProxy URL:</label>
-        <input id="base_url_box" type="url" size="60"/>
-        <p><button id="save_button">Save</button></p>
-    </body>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title>EZProxy Redirect Options</title>
+
+    <link rel="stylesheet" href="options.css">
+
+    <script src="polyfills.js"></script>
+    <script src="options.js"></script>
+  </head>
+
+  <body>
+    <p id="status"></p>
+
+    <p>
+      The string "$@" (without quotes) will be replaced with the URL to
+      redirect to. For example
+      <code>http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@</code>.
+    </p>
+
+    <p>The list of schools below will auto-update from my
+      <a href="https://ezproxy-db.appspot.com/" target="_blank" rel="noopener">
+        EZProxy database
+      </a>.
+    </p>
+
+    <form id="form">
+      <label>
+        <input type="radio" id="select-radio" name="url_type">
+        Select School:
+      </label>
+
+      <select id="url-select">
+        <option value="http://login.ezproxy1.lib.asu.edu/login?url=$@">Arizona State University</option>
+        <option value="http://ezpcrc.bu.edu/login?URL=$@">Boston University Charles River Campus</option>
+        <option value="https://www.lib.byu.edu/cgi-bin/remoteauth.pl?url=$@">Brigham Young University</option>
+        <option value="https://revproxy.brown.edu/login?url=$@">Brown University</option>
+        <option value="http://ezproxy.cul.columbia.edu/login?url=$@">Columbia University</option>
+        <option value="http://encompass.library.cornell.edu/cgi-bin/checkIP.cgi?access=gateway_standard&url=$@">Cornell University</option>
+        <option value="http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@">Drexel University</option>
+        <option value="http://proxy.lib.duke.edu:2048/login?url=$@">Duke University</option>
+        <option value="https://proxy.library.emory.edu/login?url=$@">Emory University</option>
+        <option value="https://login.proxy.lib.fsu.edu/login?url=$@">Florida State</option>
+        <option value="http://www.library.gatech.edu:2048/login?url=$@">Georgia Tech</option>
+        <option value="http://ezp1.harvard.edu/login?url=$@">Harvard</option>
+        <option value="http://ezproxyhost.library.tmc.edu/login?url=$@">Houston Academy of Medicine</option>
+        <option value="https://libproxy.mit.edu/cgi-bin/ezpauth?url=$@">MIT</option>
+        <option value="http://ezproxy.ub.unimaas.nl/login?url=$@">Maastricht University</option>
+        <option value="http://eresources.library.mssm.edu:2048/login?url=$@">Mt. Sinai School of Medicine (NYU)</option>
+        <option value="https://sesame.library.northwestern.edu:443/cgi-bin/ssoEzpCheck.pl?url=$@">Northwestern University</option>
+        <option value="http://ezproxy.rit.edu/login?url=$@">RIT</option>
+        <option value="https://login.ezproxy.rice.edu/login?url=$@">Rice University</option>
+        <option value="http://ezproxy.tamu.edu:2048/login?url=$@">Texas A&amp;M</option>
+        <option value="http://www.library.tufts.edu/ezproxy/exproxy.asp?LOCATION=$@">Tufts University</option>
+        <option value="http://libproxy.uthscsa.edu/login?url=$@">UT Health Center San Antonio</option>
+        <option value="http://proxy.ub.umu.se/login?url=$@">Umea University</option>
+        <option value="http://login.ezproxy.library.ualberta.ca/login?url=$@">University of Alberta</option>
+        <option value="http://login.ezproxy.lib.ucf.edu/login?url=$@">University of Central Florida</option>
+        <option value="http://proxy.cc.uic.edu/login?url=$@">University of Illinois at Chicago</option>
+        <option value="http://proxy-um.researchport.umd.edu/login?url=$@">University of Maryland, College Park</option>
+        <option value="https://www.lib.umn.edu/log.phtml?url=$@">University of Minnesota</option>
+        <option value="https://proxy.library.upenn.edu/login?url=$@">University of Pennsylvania</option>
+        <option value="http://ezproxy.library.uq.edu.au/login?url=$@">University of Queensland</option>
+        <option value="http://ezproxy.lib.usf.edu/login?url=$@">University of South Florida</option>
+        <option value="http://ezproxy.sussex.ac.uk/login?url=$@">University of Sussex</option>
+        <option value="http://ezproxy.library.usyd.edu.au/login?url=$@">University of Sydney</option>
+        <option value="http://myaccess.library.utoronto.ca/login?url=$@">University of Toronto</option>
+        <option value="http://offcampus.lib.washington.edu/login?url=$@">University of Washington</option>
+        <option value="https://www.lib.uwo.ca/cgi-bin/ezpauthn.cgi?url=$@">University of Western Ontario</option>
+        <option value="http://ezproxy.library.wisc.edu/login?url=$@">University of Wisconsin Madison</option>
+      </select>
+
+      <p class="divider"><strong>-OR-</strong></p>
+
+      <p>
+        If you use a custom URL, please submit your addition/correction to the
+        <a href="https://ezproxy-db.appspot.com/" target="_blank" rel="noopener">
+          EZProxy database
+        </a>
+        so that others may benefit.</p>
+
+      <label>
+        <input type="radio" id="custom-radio" name="url_type">
+        EZProxy URL:
+      </label>
+
+      <input id="url-input" type="url" required>
+      <p><button type="submit" id="save-button">Save</button></p>
+    </form>
+  </body>
+
 </html>

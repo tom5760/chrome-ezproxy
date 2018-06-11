@@ -1,93 +1,134 @@
-document.addEventListener("DOMContentLoaded", function() {
-    var status_field;
-    var url_box;
-    var select_box;
-    var select_radio;
-    var custom_radio;
+let form, statusBox, urlInput, urlSelect, selectRadio, customRadio,
+  saveButton
 
-    function init_options() {
-        status_field = document.getElementById("status");
-        url_box = document.getElementById("base_url_box");
-        select_box = document.getElementById("base_url_select");
-        select_radio = document.getElementById("url_select");
-        custom_radio = document.getElementById("url_custom");
-        save_button = document.getElementById("save_button");
+async function main() {
+  form = document.getElementById('form')
+  statusBox = document.getElementById('status')
+  urlInput = document.getElementById('url-input')
+  urlSelect = document.getElementById('url-select')
+  selectRadio = document.getElementById('select-radio')
+  customRadio = document.getElementById('custom-radio')
+  saveButton = document.getElementById('save-button')
 
-        select_radio.addEventListener("click", radio_onclick);
-        custom_radio.addEventListener("click", radio_onclick);
-        select_box.addEventListener("change", select_onchange);
-        save_button.addEventListener("click", save_options);
+  form.addEventListener('submit', onFormSubmit)
+  selectRadio.addEventListener('click', onModeClick)
+  customRadio.addEventListener('click', onModeClick)
+  urlSelect.addEventListener('change', onSelectChange)
 
-        update_url_select();
-        restore_options();
+  setFormDisabled()
+
+  await updateProxies()
+  await restoreOptions()
+
+  setFormEnabled()
+}
+
+function setStatus(text) {
+  statusBox.innerText = text
+}
+
+function setFormEnabled() {
+  saveButton.disabled = false
+  selectRadio.disabled = false
+  customRadio.disabled = false
+
+  onModeClick()
+}
+
+function setFormDisabled() {
+  const inputs = [urlInput, urlSelect, selectRadio, customRadio, saveButton]
+  for (let input of inputs) {
+    input.disabled = true
+  }
+}
+
+async function restoreOptions() {
+  const items = await storageGet({ base_url: null })
+  const baseURL = items.base_url
+
+  if (baseURL) {
+    urlInput.value = baseURL
+    urlSelect.value = baseURL
+
+    if (urlSelect.value == baseURL) {
+      selectRadio.checked = true
+    } else {
+      customRadio.checked = true
     }
+  } else {
+    selectRadio.checked = true
+    urlSelect.selectedIndex = 0
+  }
+}
 
-    function save_options() {
-        chrome.storage.sync.set({"base_url": url_box.value}, function() {
-            // Update status to let user know options were saved.
-            status_field.innerHTML = "Options Saved.";
-            setTimeout(function() {
-                status_field.innerHTML = "";
-            }, 2000);
-        });
-    }
+async function onFormSubmit(evt) {
+  evt.preventDefault()
+  setFormDisabled()
+  setStatus('Saving options...')
 
-    function restore_options() {
-        chrome.storage.sync.get({"base_url": null}, function(items) {
-            var base_url = items["base_url"];
+  try {
+    await storageSet({ base_url: urlInput.value })
+  } catch (err) {
+    console.error('failed to save options:', err)
+    setStatus('Failed to save options. Please try again later.')
+    return
+  } finally {
+    setFormEnabled()
+  }
 
-            if (base_url) {
-                url_box.value = base_url;
-                select_box.value = base_url;
-                if (select_box.value == base_url) {
-                    select_radio.checked = true;
-                } else {
-                    custom_radio.checked = true;
-                }
-            } else {
-                select_radio.checked = true;
-                select_box.selectedIndex = 0;
-            }
-            radio_onclick();
-            select_onchange();
-        });
-    }
+  setStatus('Options saved successfully.')
+}
 
-    function select_onchange() {
-        if (select_radio.checked) {
-            url_box.value = select_box.value;
-        }
-    }
+function onSelectChange() {
+  if (selectRadio.checked) {
+    urlInput.value = urlSelect.value
+  }
+}
 
-    function radio_onclick() {
-        select_box.disabled = !select_radio.checked;
-        url_box.disabled = select_radio.checked;
-    }
+function onModeClick() {
+  urlSelect.disabled = customRadio.checked
+  urlInput.disabled = selectRadio.checked
+}
 
-    function update_url_select() {
-        var req = new XMLHttpRequest();
-        req.open("GET",
-                "https://ezproxy-db.appspot.com/proxies.json", false);
-        req.onreadystatechange = function(event) {
-            if (req.readyState != 4 || req.status != 200) {
-                return;
-            }
-            var response = JSON.parse(req.responseText);
-            if (response.length > 0) {
-                for (var i = select_box.length - 1; i >= 0; i--) {
-                    select_box.remove(i);
-                }
-                for (var i in response) {
-                    var proxy = response[i];
-                    var option = document.createElement("option");
-                    option.text = proxy.name;
-                    option.value = proxy.url;
-                    select_box.add(option, null);
-                }
-            }
-        }
-        req.send();
-    }
+async function updateProxies() {
+  setStatus('Updating list of proxies...')
 
-    init_options();
-});
+  let proxies
+  try {
+    const response = await fetch('https://ezproxy-db.appspot.com/proxies.json')
+    proxies = await response.json()
+  } catch (err) {
+    setStatus('Failed to update list of proxies. Please try again later.')
+    return
+  }
+
+  if (proxies.length === 0) {
+    return
+  }
+
+  for (let i = urlSelect.length - 1; i >= 0; i--) {
+    urlSelect.remove(i)
+  }
+
+  for (let proxy of proxies) {
+    const option = document.createElement('option')
+
+    option.text = proxy.name
+    option.value = proxy.url
+
+    urlSelect.add(option, null)
+  }
+
+  setStatus('Proxy list updated.')
+}
+
+switch (document.readyState) {
+  case 'interactive':
+  case 'complete':
+    main()
+    break
+
+  default:
+    document.addEventListener('DOMContentLoaded', main)
+    break
+}

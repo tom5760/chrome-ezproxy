@@ -1,0 +1,22 @@
+body, #status {
+  margin-top: 0;
+}
+
+#status {
+  background: lightblue;
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.divider {
+  text-align: center;
+}
+
+label, #url-input, select {
+  display: block;
+  margin: 12px 0;
+}
+
+#url-input, select {
+  width: 100%;
+}
