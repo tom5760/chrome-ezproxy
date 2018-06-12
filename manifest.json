@@ -5,7 +5,6 @@
     "version": "17",
     "author": "Tom Wambold <tom5760@gmail.com>",
     "homepage_url": "https://github.com/tom5760/chrome-ezproxy",
-    "incognito": "split",
     "background": {
         "scripts": [
             "browser-polyfill.min.js",
