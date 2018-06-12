@@ -1,74 +1,171 @@
-const DEFAULT_BASE_URL = 'http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@'
-
-async function transformURL(url) {
-  const items = await storageGet({ base_url: DEFAULT_BASE_URL })
-  const base = items.base_url
-  const transformedURL = base.replace('$@', url)
-  return transformedURL
-}
-
-async function copy(text) {
-  if (!await requestPermission({ permissions: ['clipboardWrite'] })) {
+async function migrate() {
+  const items = await browser.storage.sync.get(['proxies', 'base_url'])
+  if (items.proxies) {
+    console.info('up to date')
+    // We are up to date.
     return
   }
 
-  const input = document.createElement('input')
-  try {
-    document.body.appendChild(input)
+  if (items.base_url) {
+    console.info('migrated from base_url')
+    // Migrate to new format.
+    await saveProxies([{ name: items.base_url, url: items.base_url }])
+    await browser.storage.sync.remove('base_url')
+    return
+  }
 
-    input.value = text
-    input.focus()
-    input.select()
+  if (localStorage.base_url) {
+    console.info('migrated from localStorage base_url')
+    // Migrate to new format.
+    await saveProxies([{
+      name: localStorage.base_url,
+      url: localStorage.base_url,
+    }])
+    delete localStorage.base_url
+    return
+  }
 
-    document.execCommand('copy')
-  } finally {
-    input.remove()
+  console.info('no stored data')
+}
+
+async function updateMenus() {
+  browser.contextMenus.removeAll()
+  browser.browserAction.setPopup({ popup: '' })
+
+  const proxies = await loadProxies()
+
+  if (proxies.length === 0) {
+    return
+  }
+
+  browser.contextMenus.create({
+    id: 'reload',
+    title: 'Reload page',
+    contexts: ['browser_action', 'page'],
+    documentUrlPatterns: ['http://*/*', 'https://*/*'],
+  })
+
+  browser.contextMenus.create({
+    id: 'open',
+    title: 'Open link',
+    contexts: ['link'],
+  })
+
+  browser.contextMenus.create({
+    id: 'open_new',
+    title: 'Open link in new tab',
+    contexts: ['link'],
+  })
+
+  browser.contextMenus.create({
+    id: 'copy',
+    title: 'Copy URL to clipboard',
+    contexts: ['link'],
+  })
+
+  if (proxies.length > 1) {
+    browser.browserAction.setPopup({
+      popup: browser.extension.getURL('popup.html')
+    })
+
+    for (const proxy of proxies) {
+      browser.contextMenus.create({
+        parentId: 'reload',
+        id: `1.${proxy.url}`,
+        title: proxy.name,
+        contexts: ['browser_action', 'page'],
+      })
+
+      browser.contextMenus.create({
+        parentId: 'open',
+        id: `2.${proxy.url}`,
+        title: proxy.name,
+        contexts: ['link'],
+      })
+
+      browser.contextMenus.create({
+        parentId: 'open_new',
+        id: `3.${proxy.url}`,
+        title: proxy.name,
+        contexts: ['link'],
+      })
+
+      browser.contextMenus.create({
+        parentId: 'copy',
+        id: `4.${proxy.url}`,
+        title: proxy.name,
+        contexts: ['link'],
+      })
+    }
   }
 }
 
-chrome.browserAction.onClicked.addListener(async tab => {
-  const newURL = await transformURL(tab.url)
-  chrome.tabs.update(tab.id, { url: newURL })
+async function urlFromMenuInfo(info) {
+  // If a top-level menu item was clicked, return the first proxy.
+  if (!info.parentMenuItemId) {
+    const proxies = await loadProxies()
+    if (proxies.length === 0) {
+      throw new Error('no proxy defined')
+    }
+    return proxies[0].url
+  }
+
+  // Otherwise, the URL is encoded in the sub-menu ID. Slice off the digit
+  // prefix to recover.
+  return info.menuItemId.substr(2)
+}
+
+browser.runtime.onInstalled.addListener(async details => {
+  console.info('onInstalled')
+
+  await migrate()
+  await updateMenus()
 })
 
-chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-  const oldURL = info.linkUrl || tab.url
-  const newURL = await transformURL(oldURL)
+browser.storage.onChanged.addListener(async changes => {
+  await updateMenus()
+})
 
-  switch (info.menuItemId) {
-    case 'redirect':
-      chrome.tabs.create({ url: newURL })
+browser.browserAction.onClicked.addListener(async tab => {
+  const proxies = await loadProxies()
+  if (proxies.length === 0) {
+    browser.runtime.openOptionsPage()
+    return
+  }
+
+  const proxy = proxies[0].url
+  const oldURL = tab.url
+  const newURL = transformURL(oldURL, proxy)
+
+  reloadTab(tab, newURL)
+})
+
+browser.contextMenus.onClicked.addListener(async (info, tab) => {
+  const menuID = info.parentMenuItemId || info.menuItemId
+  const oldURL = info.linkUrl || tab.url
+
+  const proxy = await urlFromMenuInfo(info)
+  const newURL = transformURL(oldURL, proxy)
+
+  switch (menuID) {
+    case 'reload':
+    case 'open':
+      reloadTab(tab, newURL)
+      break
+
+    case 'open_new':
+      openNewTab(newURL)
       break
 
     case 'copy':
-      copy(newURL)
+      const permissions = ['clipboardWrite']
+      browser.permissions.request({ permissions }, granted => {
+        if (!granted) {
+          console.warn('copy permission denied')
+          return
+        }
+        copyText(newURL)
+      })
       break
   }
-})
-
-chrome.runtime.onInstalled.addListener(async details => {
-  // Migrate old format.
-  const items = await storageGet({ base_url: null })
-
-  if (!items.base_url) {
-    var legacyBase = localStorage.base_url
-    if (legacyBase) {
-      delete localStorage.base_url
-    } else {
-      legacyBase = DEFAULT_BASE_URL
-    }
-    chrome.storage.sync.set({ base_url: legacyBase })
-  }
-})
-
-chrome.contextMenus.create({
-  id: 'redirect',
-  title: 'Open link in new tab',
-  contexts: ['link'],
-})
-
-chrome.contextMenus.create({
-  id: 'copy',
-  title: 'Copy link',
-  contexts: ['browser_action', 'link'],
 })

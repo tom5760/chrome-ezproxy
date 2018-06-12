@@ -8,7 +8,8 @@
     "incognito": "split",
     "background": {
         "scripts": [
-            "polyfills.js",
+            "browser-polyfill.min.js",
+            "shared.js",
             "background.js"
         ],
         "persistent": false

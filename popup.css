@@ -1,0 +1,11 @@
+html {
+  min-width: 200px;
+}
+
+button {
+  display: block;
+  width: 100%;
+
+  padding: 8px 16px;
+  margin: 4px 0;
+}
