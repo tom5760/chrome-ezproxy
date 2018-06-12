@@ -27,6 +27,16 @@ would change to:
 Change Log
 ----------
 
+Version 17 - June 11, 2018:
+* Add support for Mozilla Firefox from the same code base.
+* Add an option when right-clicking the browser button, or a link, to copy the
+  transformed URL to the clipboard. Right now, this only works on Google
+  Chrome. Thanks Adam Rickey @ University of San Diego for the idea.
+* Allow using multiple proxies simultaneously. On the options screen, multiple
+  proxies can be chosen. When more than one is selected, clicking the extension
+  button will display a popup listing all of them.  Context menus will also
+  display a sub-menu allowing choice of proxy.
+
 Version 16 - August 10, 2017:
 * Update to yesterdays release, now uses the "activeTab" permission, instead of
   the "tabs" permission, which removes the scary warning about the extension
