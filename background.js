@@ -57,11 +57,26 @@ async function updateMenus() {
     contexts: ['link'],
   })
 
-  browser.contextMenus.create({
-    id: 'copy',
-    title: 'Copy URL to clipboard',
-    contexts: ['link'],
-  })
+
+  // Copying and permissions doesn't work from background pages in Firefox, so
+  // just hide the copy menu item for now.
+  //   https://bugzilla.mozilla.org/show_bug.cgi?id=1422605
+  //   https://bugzilla.mozilla.org/show_bug.cgi?id=1272869
+  //
+  // Also, Chrome doesn't have the getBrowserInfo method right now (Chrome 67).
+  let canCopy = true
+  if (browser.runtime.getBrowserInfo) {
+    const info = await browser.runtime.getBrowserInfo()
+    canCopy = info.name !== 'Firefox'
+  }
+
+  if (canCopy) {
+    browser.contextMenus.create({
+      id: 'copy',
+      title: 'Copy URL to clipboard',
+      contexts: ['link'],
+    })
+  }
 
   if (proxies.length > 1) {
     browser.browserAction.setPopup({
@@ -90,12 +105,14 @@ async function updateMenus() {
         contexts: ['link'],
       })
 
-      browser.contextMenus.create({
-        parentId: 'copy',
-        id: `4.${proxy.url}`,
-        title: proxy.name,
-        contexts: ['link'],
-      })
+      if (canCopy) {
+        browser.contextMenus.create({
+          parentId: 'copy',
+          id: `4.${proxy.url}`,
+          title: proxy.name,
+          contexts: ['link'],
+        })
+      }
     }
   }
 }
