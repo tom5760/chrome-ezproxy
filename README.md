@@ -27,9 +27,13 @@ would change to:
 Change Log
 ----------
 
-Version 17 - June 11, 2018:
+Version 18 - June 13, 2018:
+* Add copy option to right-clicking the browser button, which was excluded from
+  the previous version by mistake.
+
+Version 17 - June 12, 2018:
 * Add support for Mozilla Firefox from the same code base.
-* Add an option when right-clicking the browser button, or a link, to copy the
+* Add an option when right-clicking a link, to copy the
   transformed URL to the clipboard. Right now, this only works on Google
   Chrome. Thanks Adam Rickey @ University of San Diego for the idea.
 * Allow using multiple proxies simultaneously. On the options screen, multiple
