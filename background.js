@@ -74,7 +74,7 @@ async function updateMenus() {
     browser.contextMenus.create({
       id: 'copy',
       title: 'Copy URL to clipboard',
-      contexts: ['link'],
+      contexts: ['browser_action', 'link'],
     })
   }
 
@@ -110,7 +110,7 @@ async function updateMenus() {
           parentId: 'copy',
           id: `4.${proxy.url}`,
           title: proxy.name,
-          contexts: ['link'],
+          contexts: ['browser_action', 'link'],
         })
       }
     }
