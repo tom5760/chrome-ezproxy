@@ -9,7 +9,7 @@ Code: https://github.com/tom5760/chrome-ezproxy
 
 Extension: https://chrome.google.com/extensions/detail/gfhnhcbpnnnlefhobdnmhenofhfnnfhi
 
-Destription
+Description
 -----------
 
 Many universities use EZProxy to allow its students access to various online
