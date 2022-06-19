@@ -134,7 +134,7 @@ async function updateProxies() {
 
   let proxies
   try {
-    const response = await fetch('https://ezproxy-db.appspot.com/proxies.json')
+    const response = await fetch('https://libproxy-db.org/proxies.json')
     proxies = await response.json()
   } catch (err) {
     setStatus('Failed to update list of proxies. Please try again later.')

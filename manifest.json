@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "EZProxy Redirect",
     "description": "Quickly reload pages through your library's EZProxy.",
-    "version": "18",
+    "version": "20",
     "author": "Tom Wambold <tom5760@gmail.com>",
     "homepage_url": "https://github.com/tom5760/chrome-ezproxy",
     "background": {
@@ -21,7 +21,7 @@
         "contextMenus",
         "storage",
         "activeTab",
-        "https://ezproxy-db.appspot.com/proxies.json"
+        "https://libproxy-db.org/proxies.json"
     ],
     "optional_permissions": [
         "clipboardWrite"

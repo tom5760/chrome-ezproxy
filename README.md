@@ -27,6 +27,9 @@ would change to:
 Change Log
 ----------
 
+Version 20 - June 19, 2022:
+* Update EZProxy URL Database to new site: https://libproxy-db.org/
+
 Version 18 - June 13, 2018:
 * Add copy option to right-clicking the browser button, which was excluded from
   the previous version by mistake.
@@ -59,7 +62,7 @@ Version 14 - December 12, 2014:
 Version 10 - March 23, 2011:
 * Added support for updating URL lists from my EZProxy URL Database, so
   I don't have to release new versions of the extension just to add new
-  URLs. https://ezproxy-db.appspot.com/
+  URLs. https://libproxy-db.org/
 * Fixed Columbia University URL (thanks Chris)
 * Added RIT URL (thanks Sakshar)
 
