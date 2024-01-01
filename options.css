@@ -1,79 +1,79 @@
 html {
-  min-width: 600px;
+	min-width: 600px;
 }
 
 body, #status {
-  margin-top: 0;
+	margin-top: 0;
 }
 
 #status {
-  background: lightblue;
-  border-radius: 4px;
-  padding: 8px;
+	background: lightblue;
+	border-radius: 4px;
+	padding: 8px;
 }
 
 button {
-  padding: 2px 12px;
-  text-align: center;
+	padding: 2px 12px;
+	text-align: center;
 }
 
 .row {
-  display: flex;
-  flex-direction: row;
+	display: flex;
+	flex-direction: row;
 }
 
 .column {
-  flex: 1 1 50%;
+	flex: 1 1 50%;
 
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 
-  margin: 0 12px;
+	margin: 0 12px;
 }
 
 .column select {
-  display: block;
-  width: 100%;
-  flex: 1 1 100%;
+	display: block;
+	width: 100%;
+	flex: 1 1 100%;
 }
 
 .column button {
-  flex: 0 0 auto;
-  margin: 12px 0;
+	flex: 0 0 auto;
+	margin: 12px 0;
 }
 
 .column input {
-  margin-bottom: 8px;
+	margin-bottom: 8px;
 }
 
 .actions {
-  text-align: right;
+	text-align: right;
 }
 
 #custom-form {
-  margin: 0 12px;
-  align-items: stretch;
+	margin: 0 12px;
+	align-items: stretch;
 }
 
 #custom-form label {
-  flex: 0 0 auto;
-  align-self: center;
+	flex: 0 0 auto;
+	align-self: center;
 }
 
 #custom-form input {
-  margin: 0 8px;
-  min-width: 0;
+	margin: 0 8px;
+	min-width: 0;
 }
 
 #custom-form button {
-  display: block;
-  flex: 1 1 auto;
+	display: block;
+	flex: 1 1 auto;
 }
 
 #custom-name {
-  flex: 2 1 0;
+	flex: 2 1 0;
 }
 
 #custom-url {
-  flex: 4 1 0;
+	flex: 4 1 0;
 }

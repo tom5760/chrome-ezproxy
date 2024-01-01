@@ -1,78 +1,76 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>EZProxy Redirect Options</title>
 
-    <title>EZProxy Redirect Options</title>
+		<link rel="stylesheet" href="options.css">
 
-    <link rel="stylesheet" href="options.css">
+		<script src="browser-polyfill.min.js"></script>
+		<script src="shared.js"></script>
+		<script src="options.js"></script>
+	</head>
 
-    <script src="browser-polyfill.min.js"></script>
-    <script src="shared.js"></script>
-    <script src="options.js"></script>
-  </head>
+	<body>
+		<p id="status">&nbsp;</p>
 
-  <body>
-    <p id="status">&nbsp;</p>
+		<p>
+		The string "$@" (without quotes) will be replaced with the URL to
+		redirect to. For example
+		<code>http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@</code>.
+		</p>
 
-    <p>
-      The string "$@" (without quotes) will be replaced with the URL to
-      redirect to. For example
-      <code>http://www.library.drexel.edu/cgi-bin/r.cgi?url=$@</code>.
-    </p>
+		<p>The list of schools below will auto-update from my
+		<a href="https://libproxy-db.org/" target="_blank" rel="noopener">
+			EZProxy database
+		</a>.
+		</p>
 
-    <p>The list of schools below will auto-update from my
-      <a href="https://libproxy-db.org/" target="_blank" rel="noopener">
-        EZProxy database
-      </a>.
-    </p>
+		<form id="main-form">
+			<div class="row">
+				<div class="column">
+					<label for="search">Search:</label>
+					<input type="search" id="search" placeholder="Search...">
 
-    <form id="main-form">
-      <div class="row">
-        <div class="column">
-          <label for="search">Search:</label>
-          <input type="search" id="search" placeholder="Search...">
+					<label for="available-proxies">Proxies:</label>
+					<select id="available-proxies" multiple size="10">
+						<option disabled>Loading...</option>
+					</select>
 
-          <label for="available-proxies">Proxies:</label>
-          <select id="available-proxies" multiple size="10">
-            <option disabled>Loading...</option>
-          </select>
+					<button type="button" id="add-button">Add</button>
+				</div>
 
-          <button type="button" id="add-button">Add</button>
-        </div>
+				<div class="column">
+					<label for="active-proxies">Active:</label>
+					<select id="active-proxies" multiple size="10">
+						<option disabled>Loading...</option>
+					</select>
 
-        <div class="column">
-          <label for="active-proxies">Active:</label>
-          <select id="active-proxies" multiple size="10">
-            <option disabled>Loading...</option>
-          </select>
+					<button type="button" id="remove-button">Remove</button>
+				</div>
+			</div>
+		</form>
 
-          <button type="button" id="remove-button">Remove</button>
-        </div>
-      </div>
-    </form>
+		<form id="custom-form" class="row">
+			<label for="custom-name">Custom URL:</label>
+			<input type="text" id="custom-name" placeholder="Name" required>
+			<input type="url" id="custom-url" placeholder="http://..." required
+				pattern=".*\$@.*" title="Must contain &quot;$@&quot;.">
+			<button type="submit" id="custom-add">Add</button>
+		</form>
 
-    <form id="custom-form" class="row">
-      <label for="custom-name">Custom URL:</label>
-      <input type="text" id="custom-name" placeholder="Name" required>
-      <input type="url" id="custom-url" placeholder="http://..." required
-        pattern=".*\$@.*" title="Must contain &quot;$@&quot;.">
-      <button type="submit" id="custom-add">Add</button>
-    </form>
+		<p>
+			If you use a custom URL, please submit your addition/correction to the
+			<a href="https://libproxy-db.org/" target="_blank" rel="noopener">EZProxy database</a>
+			so that others may benefit.
+		</p>
 
-    <p>
-      If you use a custom URL, please submit your addition/correction to the
-      <a href="https://libproxy-db.org/" target="_blank" rel="noopener">EZProxy database</a>
-      so that others may benefit.
-    </p>
+		<hr>
 
-    <hr>
-
-    <p class="actions"><button type="submit" id="save-button" form="main-form">
-      Save
-    </button></p>
-  </body>
-
+		<p class="actions"><button type="submit" id="save-button" form="main-form">
+			Save
+		</button></p>
+	</body>
 </html>

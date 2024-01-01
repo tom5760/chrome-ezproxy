@@ -1,11 +1,11 @@
 body {
-  min-width: 200px;
+	min-width: 200px;
 }
 
 button {
-  display: block;
-  width: 100%;
+	display: block;
+	width: 100%;
 
-  padding: 8px 16px;
-  margin: 4px 0;
+	padding: 8px 16px;
+	margin: 4px 0;
 }
