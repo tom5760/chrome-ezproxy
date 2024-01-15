@@ -52,8 +52,8 @@ async function updateMenus() {
 
 	browser.contextMenus.create({
 		id: 'reload',
-		title: 'Reload page',
-		contexts: ['browser_action', 'page'],
+		title: 'Reload page with EZProxy',
+		contexts: ['page'],
 		documentUrlPatterns: ['http://*/*', 'https://*/*'],
 	})
 
@@ -69,26 +69,11 @@ async function updateMenus() {
 		contexts: ['link'],
 	})
 
-
-	// Copying and permissions doesn't work from background pages in Firefox, so
-	// just hide the copy menu item for now.
-	//   https://bugzilla.mozilla.org/show_bug.cgi?id=1422605
-	//   https://bugzilla.mozilla.org/show_bug.cgi?id=1272869
-	//
-	// Also, Chrome doesn't have the getBrowserInfo method right now (Chrome 67).
-	let canCopy = true
-	if (browser.runtime.getBrowserInfo) {
-		const info = await browser.runtime.getBrowserInfo()
-		canCopy = info.name !== 'Firefox'
-	}
-
-	if (canCopy) {
-		browser.contextMenus.create({
-			id: 'copy',
-			title: 'Copy URL to clipboard',
-			contexts: ['browser_action', 'link'],
-		})
-	}
+	browser.contextMenus.create({
+		id: 'copy',
+		title: 'Copy URL to clipboard',
+		contexts: ['link'],
+	})
 
 	if (proxies.length > 1) {
 		browser.action.setPopup({
@@ -100,7 +85,7 @@ async function updateMenus() {
 				parentId: 'reload',
 				id: `1.${proxy.url}`,
 				title: proxy.name,
-				contexts: ['browser_action', 'page'],
+				contexts: ['page'],
 			})
 
 			browser.contextMenus.create({
@@ -117,21 +102,19 @@ async function updateMenus() {
 				contexts: ['link'],
 			})
 
-			if (canCopy) {
-				browser.contextMenus.create({
-					parentId: 'copy',
-					id: `4.${proxy.url}`,
-					title: proxy.name,
-					contexts: ['browser_action', 'link'],
-				})
-			}
+			browser.contextMenus.create({
+				parentId: 'copy',
+				id: `4.${proxy.url}`,
+				title: proxy.name,
+				contexts: ['link'],
+			})
 		}
 	}
 }
 
 async function urlFromMenuInfo(info) {
 	// If a top-level menu item was clicked, return the first proxy.
-	if (!info.parentMenuItemId) {
+	if (typeof info.parentMenuItemId !== 'string') {
 		const proxies = await loadProxies()
 		if (proxies.length === 0) {
 			throw new Error('no proxy defined')
@@ -196,7 +179,12 @@ browser.action.onClicked.addListener(async tab => {
 })
 
 async function onContextMenuClicked(info, tab) {
-	const menuID = info.parentMenuItemId || info.menuItemId
+	let menuID = info.parentMenuItemId
+
+	if (typeof menuID !== 'string') {
+		menuID = info.menuItemId
+	}
+
 	const oldURL = info.linkUrl || tab.url
 
 	const proxy = await urlFromMenuInfo(info)
