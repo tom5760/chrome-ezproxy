@@ -26,7 +26,7 @@ async function migrate() {
 		return
 	}
 
-	if (localStorage && localStorage.base_url) {
+	if (typeof localStorage !== 'undefined' && localStorage.base_url) {
 		console.info('migrated from localStorage base_url')
 		// Migrate to new format.
 		await saveProxies([{
