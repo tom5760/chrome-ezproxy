@@ -1,0 +1,58 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - v**
+
+jobs:
+  build:
+    name: Build & Publish
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Install NodeJS
+        uses: actions/setup-node@v4.0.1
+        with:
+          node-version: '20.11.0'
+
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Create Package
+        run: |
+          cp manifest_chrome.json manifest.json
+          zip -r ezproxy-redirect-chrome-$GITHUB_REF_NAME.zip ./*
+
+          cp manifest_firefox.json manifest.json
+          zip -r ezproxy-redirect-firefox-$GITHUB_REF_NAME.zip ./*
+
+      - name: Upload to Chrome Web Store
+        run: |
+          npx chrome-webstore-upload-cli@3.1.0 upload \
+            --source ezproxy-redirect-chrome-$GITHUB_REF_NAME.zip
+        env:
+          EXTENSION_ID:  gfhnhcbpnnnlefhobdnmhenofhfnnfhi
+          CLIENT_ID:     ${{ secrets.CHROME_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+
+      - name: Upload to Mozilla Add-Ons
+        run: npx web-ext@7.10.0 sign --use-submission-api --channel listed
+        env:
+          WEB_EXT_API_KEY:    ${{ secrets.MOZILLA_API_KEY }}
+          WEB_EXT_API_SECRET: ${{ secrets.MOZILLA_API_SECRET }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4.1.0
+        with:
+          name: ezproxy-redirect-${{ env.GITHUB_REF_NAME }}
+          path: ezproxy-redirect-*.zip
+          if-no-files-found: error
+
+      - name: Create release
+        uses: ncipollo/release-action@v1.13.0
+        with:
+          artifactErrorsFailBuild: true
+          artifacts: ezproxy-redirect-*.zip
+          generateReleaseNotes: true
+          prerelease: ${{ contains(github.ref, '-alpha') || contains(github.ref, '-beta') || contains(github.ref, '-rc') || contains(github.ref, '-pre') }}

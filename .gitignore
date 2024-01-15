@@ -1,2 +1,4 @@
 .*.swp
 /manifest.json
+/ezproxy-redirect-*.zip
+/web-ext-artifacts/
