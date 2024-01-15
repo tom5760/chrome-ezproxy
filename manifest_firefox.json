@@ -7,7 +7,7 @@
 	"homepage_url": "https://github.com/tom5760/chrome-ezproxy",
 	"browser_specific_settings": {
 		"gecko": {
-			"id": "extension@libproxy-db.org"
+			"id": "{58609ec4-3efa-41dd-a2a7-65b5f7fc5561}"
 		}
 	},
 	"background": {
