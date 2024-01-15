@@ -1,10 +1,12 @@
 EZProxy Redirect Browser Extension
 ==================================
 
+[![Build](https://github.com/tom5760/chrome-ezproxy/actions/workflows/publish.yml/badge.svg)](https://github.com/tom5760/chrome-ezproxy/actions/workflows/publish.yml)
+
+Version: [v21](https://github.com/tom5760/chrome-ezproxy/releases/tag/v21)
+
 By: Tom Wambold <tom5760@gmail.com>
-
 Code: https://github.com/tom5760/chrome-ezproxy
-
 Chrome Extension: https://chromewebstore.google.com/detail/ezproxy-redirect/gfhnhcbpnnnlefhobdnmhenofhfnnfhi
 Firefox Extension: https://addons.mozilla.org/addon/firefox-ezproxy-redirect/
 
