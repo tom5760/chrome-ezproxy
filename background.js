@@ -1,3 +1,15 @@
+import {
+	loadProxies,
+	openNewTab,
+	reloadTab,
+	saveProxies,
+	transformURL,
+} from './shared.js'
+
+if (typeof globalThis.browser === 'undefined') {
+	globalThis.browser = chrome
+}
+
 async function migrate() {
 	const items = await browser.storage.sync.get(['proxies', 'base_url'])
 	if (items.proxies) {
@@ -14,7 +26,7 @@ async function migrate() {
 		return
 	}
 
-	if (localStorage.base_url) {
+	if (localStorage && localStorage.base_url) {
 		console.info('migrated from localStorage base_url')
 		// Migrate to new format.
 		await saveProxies([{
@@ -30,7 +42,7 @@ async function migrate() {
 
 async function updateMenus() {
 	browser.contextMenus.removeAll()
-	browser.browserAction.setPopup({ popup: '' })
+	browser.action.setPopup({ popup: '' })
 
 	const proxies = await loadProxies()
 
@@ -79,8 +91,8 @@ async function updateMenus() {
 	}
 
 	if (proxies.length > 1) {
-		browser.browserAction.setPopup({
-			popup: browser.extension.getURL('popup.html')
+		browser.action.setPopup({
+			popup: browser.runtime.getURL('popup.html')
 		})
 
 		for (const proxy of proxies) {
@@ -132,6 +144,32 @@ async function urlFromMenuInfo(info) {
 	return info.menuItemId.substr(2)
 }
 
+function doCopyText(text) {
+	const input = document.createElement('input')
+	try {
+		document.body.appendChild(input)
+
+		input.value = text
+		input.focus()
+		input.select()
+
+		document.execCommand('copy')
+	} finally {
+		input.remove()
+	}
+}
+
+function copyText(text, tabId) {
+	// This function runs in the context of a Service Worker.  We don't have
+	// access to `document` here, which we need to interact with the clipboard.
+	// Thus, we have to inject the actual function in the currently active tab.
+	browser.scripting.executeScript({
+		target: { tabId },
+		func: doCopyText,
+		args: [text],
+	})
+}
+
 browser.runtime.onInstalled.addListener(async details => {
 	console.info('onInstalled')
 
@@ -143,7 +181,7 @@ browser.storage.onChanged.addListener(async changes => {
 	await updateMenus()
 })
 
-browser.browserAction.onClicked.addListener(async tab => {
+browser.action.onClicked.addListener(async tab => {
 	const proxies = await loadProxies()
 	if (proxies.length === 0) {
 		browser.runtime.openOptionsPage()
@@ -157,7 +195,7 @@ browser.browserAction.onClicked.addListener(async tab => {
 	reloadTab(tab, newURL)
 })
 
-browser.contextMenus.onClicked.addListener(async (info, tab) => {
+async function onContextMenuClicked(info, tab) {
 	const menuID = info.parentMenuItemId || info.menuItemId
 	const oldURL = info.linkUrl || tab.url
 
@@ -175,14 +213,28 @@ browser.contextMenus.onClicked.addListener(async (info, tab) => {
 			break
 
 		case 'copy':
-			const permissions = ['clipboardWrite']
-			browser.permissions.request({ permissions }, granted => {
-				if (!granted) {
-					console.warn('copy permission denied')
-					return
-				}
-				copyText(newURL)
-			})
+			copyText(newURL, tab.id)
 			break
+	}
+}
+
+browser.contextMenus.onClicked.addListener((info, tab) => {
+	const menuID = info.parentMenuItemId || info.menuItemId
+
+	// The permissions.request call doesn't work if this function is async, so
+	// do the permissions request here before calling it.
+
+	if (menuID === 'copy') {
+		const permissions = ['clipboardWrite']
+		browser.permissions.request({ permissions }, granted => {
+			if (!granted) {
+				console.warn('copy permission denied')
+				return
+			}
+
+			onContextMenuClicked(info, tab)
+		})
+	} else {
+		onContextMenuClicked(info, tab)
 	}
 })

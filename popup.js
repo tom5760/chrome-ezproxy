@@ -1,8 +1,18 @@
+import {
+	loadProxies,
+	reloadTab,
+	transformURL,
+} from './shared.js'
+
+if (typeof globalThis.browser === 'undefined') {
+	globalThis.browser = chrome
+}
+
 async function main() {
 	const list = document.getElementById('proxy-list')
 	const proxies = await loadProxies()
 
-	for (proxy of proxies) {
+	for (const proxy of proxies) {
 		const button = document.createElement('button')
 		button.type = 'button'
 		button.innerText = proxy.name
@@ -32,13 +42,4 @@ async function onClick(evt) {
 	window.close()
 }
 
-switch (document.readyState) {
-	case 'interactive':
-	case 'complete':
-		main()
-		break
-
-	default:
-		document.addEventListener('DOMContentLoaded', main)
-		break
-}
+main()

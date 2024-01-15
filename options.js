@@ -1,3 +1,12 @@
+import {
+	loadProxies,
+	saveProxies,
+} from './shared.js'
+
+if (typeof globalThis.browser === 'undefined') {
+	globalThis.browser = chrome
+}
+
 let mainForm, statusBox, availableProxiesSelect, activeProxiesSelect, addButton,
 	removeButton, saveButton, searchInput, customForm, customNameInput,
 	customURLInput, customAddButton
@@ -190,13 +199,4 @@ function addOption(select, name, url) {
 	select.add(option, null)
 }
 
-switch (document.readyState) {
-	case 'interactive':
-	case 'complete':
-		main()
-		break
-
-	default:
-		document.addEventListener('DOMContentLoaded', main)
-		break
-}
+main()
