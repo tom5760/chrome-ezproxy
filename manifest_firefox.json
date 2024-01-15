@@ -30,6 +30,11 @@
 	"host_permissions": [
 		"https://libproxy-db.org/proxies.json"
 	],
+	"commands": {
+		"_execute_action": {
+			"description": "Reload the current page through EZProxy."
+		}
+	},
 	"icons": {
 		"16": "icon16.png",
 		"48": "icon48.png",
