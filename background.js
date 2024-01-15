@@ -213,7 +213,7 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
 	// do the permissions request here before calling it.
 
 	if (menuID === 'copy') {
-		const permissions = ['clipboardWrite']
+		const permissions = ['clipboardWrite', 'scripting']
 		browser.permissions.request({ permissions }, granted => {
 			if (!granted) {
 				console.warn('copy permission denied')

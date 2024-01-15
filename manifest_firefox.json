@@ -21,11 +21,11 @@
 	"permissions": [
 		"activeTab",
 		"contextMenus",
-		"scripting",
 		"storage"
 	],
 	"optional_permissions": [
-		"clipboardWrite"
+		"clipboardWrite",
+		"scripting"
 	],
 	"host_permissions": [
 		"https://libproxy-db.org/proxies.json"
