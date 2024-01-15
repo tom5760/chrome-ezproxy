@@ -2,7 +2,7 @@
 	"manifest_version": 3,
 	"name": "EZProxy Redirect",
 	"description": "Quickly reload pages through your library's EZProxy.",
-	"version": "21",
+	"version": "22",
 	"author": "Tom Wambold <tom5760@gmail.com>",
 	"homepage_url": "https://github.com/tom5760/chrome-ezproxy",
 	"background": {
